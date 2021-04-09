@@ -1,7 +1,7 @@
 import cv2
 import time
 import os
-import HandTrackingModule
+from HandTrackingModule import HandDetector
 
 capture = cv2.VideoCapture(0) 
 capture.set(3,480)
@@ -15,6 +15,7 @@ for im_path in dirs:
     img = cv2.imread(f'{folder}/{im_path}')
     images.append(img)
 
+detector = HandDetector(detection_conf=0.7, track_conf=0.7)
 
 previouse_time = 0
 while True:
@@ -24,6 +25,8 @@ while True:
         current_time = time.time()
         h,w,c = images[0].shape
         img[0:h,0:w] = images[0]
+        img = detector.find_hands(img)
+        landmarks_list = detector.find_position(img)
         
         try:
             fps = int(1/(current_time-previouse_time))
@@ -34,7 +37,7 @@ while True:
                 (0,400),# location
                 cv2.FONT_HERSHEY_COMPLEX,# text font
                 1,# scale
-                (100,100,100),# color
+                (100,100,0),# color
                 3)# thiknes
         except ZeroDivisionError:
             pass       
