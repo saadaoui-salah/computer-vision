@@ -43,7 +43,10 @@ while True:
 
     # Calculate fps
     current_time = time.time()
-    fps = 1/(current_time - previous_time)
+    try:
+        fps = int(1/(current_time - previous_time))
+    except Exception:
+        pass
     previous_time = current_time
     # Add text
     cv2.putText(

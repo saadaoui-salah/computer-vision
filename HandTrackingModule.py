@@ -4,7 +4,7 @@ import time
 
 
 class HandDetector():
-    def __init__(self,mode=False, max_hands=2, detection_conf=0.5, track_conf=0.5)
+    def __init__(self,mode=False, max_hands=2, detection_conf=0.6, track_conf=0.6):
         self.mode           = mode
         self.max_hands      = max_hands
         self.detection_conf = detection_conf
@@ -26,15 +26,16 @@ class HandDetector():
         self.hands_landmarks = self.results.multi_hand_landmarks
         if self.hands_landmarks:
             for hand_landmarks in self.hands_landmarks:
-                    self.mpdraw.draw_landmarks(img, hand_landmarks, slef.mphands.HAND_CONNECTIONS)
+                    self.mpdraw.draw_landmarks(img, hand_landmarks, self.mphands.HAND_CONNECTIONS)
         return img         
     
-    def find_position(self,hand_number=0):
+    def find_position(self,img,hand_number=0):
         landmarks_list = []
-        hand = self.hands_landmarks[hand_number]
         if self.hands_landmarks:
+            hand = self.hands_landmarks[hand_number]
+            #print(self.hands_landmarks)
             for id, lm in enumerate(hand.landmark):
-                self.mpdraw.draw_landmarks(img, hand_landmarks, slef.mphands.HAND_CONNECTIONS)
+                self.mpdraw.draw_landmarks(img, hand, self.mphands.HAND_CONNECTIONS)
                 h, w, c = img.shape
                 cx, cy  = int(lm.x*w), int(lm.y*h)
                 landmarks_list.append([id, cx, cy])
@@ -53,13 +54,17 @@ def main():
         img = detector.find_hends(img)
         landmarks_list = detector.find_position(img)
         if landmarks_list != 0:
-            print(landmarks_list)
+           print(landmarks_list)
         current_time = time.time()
-        fps = 1/(current_time - previous_time)
+        try:
+            fps = 1/(current_time - previous_time)
+        except ZeroDivisionError:
+            pass
         previous_time = current_time
         cv2.putText(
             img,
             f'FPS: {str(fps)}',
+            (10,78),
             cv2.FONT_HERSHEY_PLAIN,
             3,
             (255,0,255),
