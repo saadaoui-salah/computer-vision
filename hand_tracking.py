@@ -11,8 +11,6 @@ hands   = mphands.Hands()
 mpdraw  = mp.solutions.drawing_utils
 
 previous_time = 0 
-current_time = 0 
-
 while True:
     
     success, img = cap.read()
@@ -43,10 +41,7 @@ while True:
 
     # Calculate fps
     current_time = time.time()
-    try:
-        fps = int(1/(current_time - previous_time))
-    except Exception:
-        pass
+    fps = int(1/(current_time - previous_time))
     previous_time = current_time
     # Add text
     cv2.putText(

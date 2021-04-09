@@ -39,7 +39,7 @@ class HandDetector():
                 h, w, c = img.shape
                 cx, cy  = int(lm.x*w), int(lm.y*h)
                 landmarks_list.append([id, cx, cy])
-                cv2.circle(img, (cx,cy), 15, (255,0,255), cv2.FILLED)
+                #cv2.circle(img, (cx,cy), 15, (255,0,255), cv2.FILLED)
 
         return landmarks_list
 
@@ -47,19 +47,16 @@ def main():
 
     cap = cv2.VideoCapture(0)
     detector = HandDetector()
+    previous_time = 0
     while True:    
         success, img = cap.read()
-        previous_time = time.time()
         
         img = detector.find_hends(img)
         landmarks_list = detector.find_position(img)
         if landmarks_list != 0:
            print(landmarks_list)
         current_time = time.time()
-        try:
-            fps = 1/(current_time - previous_time)
-        except ZeroDivisionError:
-            pass
+        fps = 1/(current_time - previous_time)
         previous_time = current_time
         cv2.putText(
             img,
