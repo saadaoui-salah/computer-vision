@@ -26,7 +26,7 @@ while True:
         for hand_landmarks in hands_landmarks:
             for id, lm in enumerate(hand_landmarks.landmark):
                 # will give us each landmark with (x,y,z) 
-                # print(id,lm)
+                print(id,lm)
                 # 
                 h, w, c = img.shape
                 # multiply the width with x and the height with y  
@@ -38,20 +38,21 @@ while True:
                 #if id == 0:
                 #    cv2.circle((cx,cy), 15, (255,0,255), cv2.FILLED)
 
-
     # Calculate fps
-    current_time = time.time()
-    fps = int(1/(current_time - previous_time))
-    previous_time = current_time
-    # Add text
-    cv2.putText(
-        img,
-        f'FPS: {fps}',
-        (10,78),
-        cv2.FONT_HERSHEY_PLAIN,
-        3,
-        (255,0,255),
-        3)
-
+    try:
+        current_time = time.time()
+        fps = int(1/(current_time - previous_time))
+        previous_time = current_time
+        # Add text
+        cv2.putText(
+            img,
+            f'FPS: {fps}',
+            (10,78),
+            cv2.FONT_HERSHEY_PLAIN,
+            3,
+            (255,0,255),
+          3)
+    except ZeroDivisionError:
+        pass
     cv2.imshow('Image', img)
     cv2.waitKey(1)

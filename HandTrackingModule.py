@@ -29,13 +29,14 @@ class HandDetector():
                     self.mpdraw.draw_landmarks(img, hand_landmarks, self.mphands.HAND_CONNECTIONS)
         return img         
     
-    def find_position(self,img,hand_number=0):
+    def find_position(self,img,hand_number=0,draw=True):
         landmarks_list = []
         if self.hands_landmarks:
             hand = self.hands_landmarks[hand_number]
             #print(self.hands_landmarks)
             for id, lm in enumerate(hand.landmark):
-                self.mpdraw.draw_landmarks(img, hand, self.mphands.HAND_CONNECTIONS)
+                if draw:
+                    self.mpdraw.draw_landmarks(img, hand, self.mphands.HAND_CONNECTIONS)
                 h, w, c = img.shape
                 cx, cy  = int(lm.x*w), int(lm.y*h)
                 landmarks_list.append([id, cx, cy])
@@ -53,19 +54,22 @@ def main():
         
         img = detector.find_hands(img)
         landmarks_list = detector.find_position(img)
-        if landmarks_list != 0:
+        if len(landmarks_list) != 0:
            print(landmarks_list)
         current_time = time.time()
-        fps = 1/(current_time - previous_time)
-        previous_time = current_time
-        cv2.putText(
-            img,
-            f'FPS: {str(fps)}',
-            (10,78),
-            cv2.FONT_HERSHEY_PLAIN,
-            3,
-            (255,0,255),
-            3)
+        try:
+            fps = 1/(current_time - previous_time)
+            previous_time = current_time
+            cv2.putText(
+                img,
+                f'FPS: {str(fps)}',
+                (10,78),
+                cv2.FONT_HERSHEY_PLAIN,
+                3,
+                (255,0,255),
+                3)
+        except ZeroDivisionError:
+            pass
         cv2.imshow('Image', img)
         cv2.waitKey(1)
 
