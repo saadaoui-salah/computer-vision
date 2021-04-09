@@ -16,13 +16,26 @@ for im_path in dirs:
     images.append(img)
 
 
-
+previouse_time = 0
 while True:
 
     success, img = capture.read()
     if success:
         h,w,c = images[0].shape
         img[0:h,0:w] = images[0]
+        
+        
+        current_time = time.time()
+        fps = int(1/(current_time-previouse_time))
+        previouse_time = current_time
+        cv2.putText(
+            img,
+            f'FPS: {str(fps)}',
+            (0,0),
+            cv2.FONT_HERSHEY_COMPLEX,
+            3,
+            (0,0,0),
+            3)
         cv2.imshow("Image",img)
         cv2.waitKey(1)
 
