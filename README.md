@@ -2,7 +2,8 @@
 
 ## Usage:
 innstall dependencies
---pip install -r requerments.txt
+    
+    pip install -r requerments.txt
 
 for body pose landmarks:
     
