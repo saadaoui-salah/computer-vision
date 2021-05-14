@@ -1,7 +1,10 @@
 # computer-vision
 
+## Overview:
+This repo contains computer vision projects that i
+created when i was learning OpenCv 
+
 ## Usage:
-innstall dependencies
     
     pip install -r requerments.txt
 
